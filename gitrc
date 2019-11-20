@@ -10,3 +10,7 @@ export PROMPT_COMMAND='__git_ps1 "\w" " λ "'
 if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
+
+if [ -f ~/.bashrc.d/templates/.gitconfig ] && ! [ -f ~/.gitconfig ]; then
+  cp ~/.bashrc.d/templates/.gitconfig ~/.gitconfig
+fi
