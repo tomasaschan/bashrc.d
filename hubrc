@@ -1,0 +1,2 @@
+PATH="$PATH:/opt/hub/bin"
+alias git=hub

@@ -1,0 +1,3 @@
+if [ -f "$HOME/.python/startup.py" ]; then
+  export PYTHONSTARTUP="$HOME/.python/startup.py"
+fi
