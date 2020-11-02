@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 export GIT_PS1_SHOWDIRTYSTATE='true'
 export GIT_PS1_SHOWUNTRACKEDFILES='true'
 export GIT_PS1_SHOWUPSTREAM='auto'
@@ -5,15 +7,41 @@ export GIT_PS1_SHOWCOLORHINTS='true'
 export GIT_PS1_SHOWSTASHSTATE='true'
 export GIT_PS1_STATESEPARATOR=' '
 
+
+
+export RESET_INTENSITY="\[\e[1;22m\]"
+export RESET_ALL="\[\e[m\]"
+# Colors
+light_green="\e[1;32m"
+light_red="\e[1;31m"
+light_yellow="\e[1;33m"
+yellow="\e[0;33m"
+gray="\e[0;37m"
+reset="\e[m"
+
+function get_prompt() {
+    local status="$?"
+    local status_color=""
+
+    if [ $status != 0 ]; then
+        status_color=$light_red
+    else
+        # status_color=$light_green
+        status_color=$light_green
+    fi
+
+    PROMPT="${status_color}λ${reset}"
+
+    __git_ps1 "$gray\w""$(virtualenv_info)" "\n""$PROMPT "
+}
+
+
 function virtualenv_info() {
     if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo " (\e[93m\e[2m.venv:\e[22m$(basename $VIRTUAL_ENV)\e[0m)"
+        echo " (${light_yellow}.venv:${reset}${yellow}$(basename $VIRTUAL_ENV)${reset})"
     else
         echo ""
     fi
 }
 
-# disable the default virtualenv prompt change
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-export PROMPT_COMMAND='__git_ps1 "\w""$(virtualenv_info)" "\nλ "'
+export PROMPT_COMMAND='get_prompt' 
