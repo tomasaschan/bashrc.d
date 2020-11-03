@@ -7,41 +7,33 @@ export GIT_PS1_SHOWCOLORHINTS='true'
 export GIT_PS1_SHOWSTASHSTATE='true'
 export GIT_PS1_STATESEPARATOR=' '
 
+lambda='λ'
 
-
-export RESET_INTENSITY="\[\e[1;22m\]"
-export RESET_ALL="\[\e[m\]"
 # Colors
-light_green="\e[1;32m"
-light_red="\e[1;31m"
-light_yellow="\e[1;33m"
-yellow="\e[0;33m"
-gray="\e[0;37m"
-reset="\e[m"
+light_green="\[\e[32m\]"
+light_red="\[\e[1;31m\]"
+light_yellow="\[\e[1;33m\]"
+yellow="\[\e[0;33m\]"
+gray="\[\e[0;37m\]"
+reset="\[\e[0m\]"
 
 function get_prompt() {
     local status="$?"
     local status_color=""
+    local venv_info=""
 
     if [ $status != 0 ]; then
         status_color=$light_red
     else
-        # status_color=$light_green
         status_color=$light_green
     fi
 
-    PROMPT="${status_color}λ${reset}"
-
-    __git_ps1 "$gray\w""$(virtualenv_info)" "\n""$PROMPT "
-}
-
-
-function virtualenv_info() {
     if [[ -n "$VIRTUAL_ENV" ]]; then
-        echo " (${light_yellow}.venv:${reset}${yellow}$(basename $VIRTUAL_ENV)${reset})"
-    else
-        echo ""
+        venv_info=" (${light_yellow}.venv:${reset}${yellow}$(basename "$VIRTUAL_ENV")${reset})"
     fi
+
+    PROMPT="$status_color$lambda$reset"
+     __git_ps1 "$gray\w$venv_info" "\n$PROMPT "
 }
 
 export PROMPT_COMMAND='get_prompt' 
