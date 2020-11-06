@@ -1,0 +1,7 @@
+if qualtrics --help > /dev/null 2>&1; then
+  eval "$(_QUALTRICS_COMPLETE=source_bash qualtrics)"
+fi
+
+if engsat --help > /dev/null 2>&1; then
+  eval "$(_ENGSAT_COMPLETE=source_bash engsat)"
+fi
